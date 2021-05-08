@@ -55,3 +55,15 @@ body{
     border-radius: 5px;
     margin-top: 30px;
 }
+.questionsBox{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.question{
+    font-weight:1000;
+}
+.options-list{
+    list-style: none;
+}
