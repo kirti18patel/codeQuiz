@@ -35,12 +35,26 @@ var button = document.querySelector(".start-btn");
 var headingBox = document.querySelector(".heading-box");
 var questionsBox = document.querySelector(".questionsBox");
 var quesRemove = document.querySelector(".question");
+var time = document.querySelector(".time");
 
-console.log(questionBank.length);
+var startTimer;
+
+var timerCount=75;
+var timer = function(){
+    if(timerCount!=0){
+        time.innerHTML = "Time : "+timerCount;
+        timerCount--;
+    }
+    else{
+        console.log("game over");
+        clearInterval(startTimer);
+    }
+};
+
 var displayQuestions = function(){    
     headingBox.remove();
     for(var i=0; i<questionBank.length;i++){
-        // quesRemove.remove();
+        // questions.textContent = "";
         var questions = document.createElement("h1");
         questions.textContent = questionBank[i].question;
         questions.className = "question";
@@ -57,6 +71,7 @@ var displayQuestions = function(){
             }
         questionsBox.appendChild(optionsList);
     }
+    startTimer = setInterval(timer, 1000);
 };
 
 button.addEventListener("click", displayQuestions);
