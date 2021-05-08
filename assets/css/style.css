@@ -67,3 +67,11 @@ body{
 .options-list{
     list-style: none;
 }
+.options{
+    color: var(--start-btn-text);
+    background: var(--dark-blue);
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    width: 40%;
+}
