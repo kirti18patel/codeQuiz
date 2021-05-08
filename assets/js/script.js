@@ -36,18 +36,59 @@ var headingBox = document.querySelector(".heading-box");
 var questionsBox = document.querySelector(".questionsBox");
 var quesRemove = document.querySelector(".question");
 var time = document.querySelector(".time");
+var finalScore = document.querySelector(".result");
 
 var startTimer;
 
-var timerCount=75;
+
+var displayResult = function(timerCount){
+    questionsBox.remove();
+
+    var resultHeading = document.createElement("h1");
+    resultHeading.textContent = "All done!";
+    resultHeading.className = "result-heading";
+    finalScore.appendChild(resultHeading);
+
+    var resultText = document.createElement("h3");
+    resultText.textContent = "Your final score is " + (timerCount+1) + ".";
+    resultText.className = "font-size"
+    finalScore.appendChild(resultText);
+
+    var resultDisplayForm = document.createElement("form");
+    resultDisplayForm.className = "flex-box";
+    var resultDisplayFormText = document.createElement("h3");
+    resultDisplayFormText.className= "font-size";
+    resultDisplayFormText.textContent = "Enter initials : ";
+
+    resultDisplayForm.appendChild(resultDisplayFormText);
+
+    var resultDisplayFormInput = document.createElement("input");
+    resultDisplayFormInput.type = "text";
+    resultDisplayFormInput.className = "input font-size";
+
+    resultDisplayForm.appendChild(resultDisplayFormInput);
+
+    var resultDisplayFormInput = document.createElement("button");
+    resultDisplayFormInput.type = "submit";
+    resultDisplayFormInput.className = "submit-btn font-size";
+    resultDisplayFormInput.innerHTML="Submit";
+
+    resultDisplayForm.appendChild(resultDisplayFormInput);
+
+    finalScore.appendChild(resultDisplayForm);
+
+
+    
+};
+var timerCount=2;
 var timer = function(){
-    if(timerCount!=0){
+    if(timerCount>=0){
         time.innerHTML = "Time : "+timerCount;
         timerCount--;
     }
     else{
-        console.log("game over");
         clearInterval(startTimer);
+        displayResult(timerCount);
     }
 };
 
