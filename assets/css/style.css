@@ -8,6 +8,7 @@
     --purple : #bd60e7;
     --start-btn-text : #d5d1e3;
     --input-border : #77a9d7;
+    --high-score-light-color : #d9d3e9;
 }
 body{
     display: flex;
@@ -22,6 +23,7 @@ body{
     margin: auto;
     border: 3px solid black;
     border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     position: relative;
     padding: 40px;
 }
@@ -29,6 +31,7 @@ body{
     color: var(--purple);
     position: absolute;
     top: 30px;
+    cursor: pointer;
 }
 .time{
     position: absolute;
@@ -81,7 +84,8 @@ body{
     background: var(--purple);
 }
 
-.result{
+.result,
+.high-score{
     position: absolute;
     margin: auto;
     top: 25%;
@@ -109,7 +113,9 @@ body{
 .input:focus{
     border: 3px solid var(--input-border);
 }
-.submit-btn{
+.submit-btn,
+.go-back-btn,
+.clear-high-score-btn{
     background: var(--dark-blue);
     color: var(--start-btn-text);
     border-radius: 5px;
@@ -117,7 +123,18 @@ body{
     border: none;
     padding: 8px 15px;
     cursor: pointer;
+    margin: 0 10px 0 0;
 }
-.submit-btn:hover{
+.submit-btn:hover,
+.go-back-btn:hover,
+.clear-high-score-btn:hover{
     background: var(--purple);
+}
+
+.high-score-text{
+    background: var(--high-score-light-color);
+    padding: 0 10px;
+    width: 500px;
+    font-size: 1.2em;
+    margin-bottom: 10px;
 }

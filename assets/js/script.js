@@ -32,14 +32,17 @@ var questionBank= [
 ];
 
 var button = document.querySelector(".start-btn");
+var pageHighScore = document.querySelector(".page-high-score");
 var headingBox = document.querySelector(".heading-box");
 var questionsBox = document.querySelector(".questionsBox");
 var quesRemove = document.querySelector(".question");
 var time = document.querySelector(".time");
 var finalScore = document.querySelector(".result");
+var highScore = document.querySelector(".high-score");
 
 var startTimer;
 
+var timerCount=5;
 
 var displayResult = function(timerCount){
     questionsBox.remove();
@@ -59,7 +62,6 @@ var displayResult = function(timerCount){
     var resultDisplayFormText = document.createElement("h3");
     resultDisplayFormText.className= "font-size";
     resultDisplayFormText.textContent = "Enter initials : ";
-
     resultDisplayForm.appendChild(resultDisplayFormText);
 
     var resultDisplayFormInput = document.createElement("input");
@@ -68,27 +70,58 @@ var displayResult = function(timerCount){
 
     resultDisplayForm.appendChild(resultDisplayFormInput);
 
-    var resultDisplayFormInput = document.createElement("button");
-    resultDisplayFormInput.type = "submit";
-    resultDisplayFormInput.className = "submit-btn font-size";
-    resultDisplayFormInput.innerHTML="Submit";
-
-    resultDisplayForm.appendChild(resultDisplayFormInput);
-
-    finalScore.appendChild(resultDisplayForm);
-
-
+    var resultDisplayFormbutton = document.createElement("button");
+    resultDisplayFormbutton.type = "submit";
+    resultDisplayFormbutton.className = "submit-btn font-size";
+    resultDisplayFormbutton.innerHTML="Submit";
     
+    resultDisplayForm.appendChild(resultDisplayFormbutton);
+    finalScore.appendChild(resultDisplayForm);
+    var buttonSubmit= document.querySelector(".submit-btn");
+    buttonSubmit.addEventListener("click", highScores, 100);
+
+    var userInitials = resultDisplayFormInput.value;
+    console.log(userInitials);
 };
-var timerCount=2;
+var highScores = function(){
+    finalScore.remove();
+    time.remove();
+    pageHighScore.remove();
+    headingBox.remove();
+
+    var name = "kirti";
+    var score = timerCount;
+    var highScoreHeading = document.createElement("h1");
+    highScoreHeading.textContent = "High Scores";
+    highScoreHeading.className = "result-heading";
+    highScore.appendChild(highScoreHeading);
+
+    var highScoreText = document.createElement("h3");
+    highScoreText.textContent = "1. " + name + " -> " + (score+1);
+    highScoreText.className = "high-score-text";
+    highScore.appendChild(highScoreText);
+
+     var goBackBtn = document.createElement("button");
+     goBackBtn.textContent = "Go Back";
+     goBackBtn.className = "go-back-btn";
+     goBackBtn.onclick = displayQuestions;
+     highScore.appendChild(goBackBtn);
+
+     var clearHighScore = document.createElement("button");
+     clearHighScore.textContent = "Go Back";
+     clearHighScore.className = "go-back-btn";
+     clearHighScore.onclick = displayQuestions;
+     highScore.appendChild(clearHighScore);
+
+};
 var timer = function(){
     if(timerCount>=0){
         time.innerHTML = "Time : "+timerCount;
         timerCount--;
     }
     else{
-        clearInterval(startTimer);
         displayResult(timerCount);
+        clearInterval(startTimer);
     }
 };
 
