@@ -39,13 +39,20 @@ var quesRemove = document.querySelector(".question");
 var time = document.querySelector(".time");
 var finalScore = document.querySelector(".result");
 var highScore = document.querySelector(".high-score");
+var answerResponse = document.querySelector(".answer-response");
 
 var startTimer;
-
-var timerCount=5;
+var questions;
+var optionsList;
+var options;
+var questionCounter=0;
+var displayQuestionTimer;
+var timerCount=60;
+var currentScore=0;
 
 var displayResult = function(timerCount){
-    questionsBox.remove();
+    // questionsBox.remove();
+    questionsBox.style.display = "none";
 
     var resultHeading = document.createElement("h1");
     resultHeading.textContent = "All done!";
@@ -84,10 +91,10 @@ var displayResult = function(timerCount){
     console.log(userInitials);
 };
 var highScores = function(){
-    finalScore.remove();
-    time.remove();
-    pageHighScore.remove();
-    headingBox.remove();
+    finalScore.style.display = "none";
+    time.style.display = "none";
+    pageHighScore.style.display = "none";
+    headingBox.style.display = "none";
 
     var name = "kirti";
     var score = timerCount;
@@ -104,16 +111,20 @@ var highScores = function(){
      var goBackBtn = document.createElement("button");
      goBackBtn.textContent = "Go Back";
      goBackBtn.className = "go-back-btn";
-     goBackBtn.onclick = displayQuestions;
+     goBackBtn.onclick = koib;
      highScore.appendChild(goBackBtn);
 
      var clearHighScore = document.createElement("button");
      clearHighScore.textContent = "Go Back";
      clearHighScore.className = "go-back-btn";
-     clearHighScore.onclick = displayQuestions;
+     clearHighScore.onclick = koib;
      highScore.appendChild(clearHighScore);
 
 };
+var koib = function(){
+    headingBox.style.display = "initial";
+    // console.log("hello");
+ };
 var timer = function(){
     if(timerCount>=0){
         time.innerHTML = "Time : "+timerCount;
@@ -125,27 +136,56 @@ var timer = function(){
     }
 };
 
-var displayQuestions = function(){    
-    headingBox.remove();
-    for(var i=0; i<questionBank.length;i++){
-        // questions.textContent = "";
-        var questions = document.createElement("h1");
-        questions.textContent = questionBank[i].question;
-        questions.className = "question";
-        questionsBox.appendChild(questions);
-
-        var optionsList = document.createElement("ul");
-        optionsList.className = "options-list";
-
-            for(var j=0; j<questionBank[i].options.length; j++){
-                var options = document.createElement("li");
-                options.textContent = questionBank[i].options[j];
-                options.className = "options";
-                optionsList.appendChild(options);
-            }
-        questionsBox.appendChild(optionsList);
+var checkResult = function(userChoice){
+    answerResponse.style.display = "initial";    
+    if(userChoice === questionBank[questionCounter].answer){
+        currentScore++;
+        answerResponse.textContent = "Correct!";
     }
-    startTimer = setInterval(timer, 1000);
+    else{
+        timerCount=timerCount-10;
+        answerResponse.textContent = "Wrong!";
+    }
+    displayNextQuestion();
 };
 
-button.addEventListener("click", displayQuestions);
+var displayNextQuestion = function(){
+    questionCounter++;
+    if(questionCounter>(questionBank.length-1)){
+        clearInterval(displayQuestionTimer);
+        return;
+    }
+    questions.textContent = questionBank[questionCounter].question;
+    for( var j = 0; j<4; j++){
+        var option = document.querySelector("#option"+j);
+        option.textContent = questionBank[questionCounter].options[j];
+    }
+};
+
+var loadFirstQuestion = function(){
+    headingBox.style.display = "none";
+    questions = document.createElement("h1");
+    questions.textContent = questionBank[0].question;
+    questions.className = "question";
+    questionsBox.appendChild(questions);
+
+    optionsList = document.createElement("ul");
+    optionsList.className = "options-list";
+
+        for(var j=0; j<questionBank[0].options.length; j++){
+            options = document.createElement("li");
+            options.textContent = questionBank[0].options[j];
+            options.className = "options";
+            options.id = "option"+j;
+            optionsList.appendChild(options);
+        }
+    questionsBox.appendChild(optionsList);
+    startTimer = setInterval(timer, 1000);
+    optionsList.onclick = function(event){
+        var userChoice = event.target.id;
+        if (userChoice ==="option0" || userChoice ==="option1" || userChoice ==="option2" || userChoice ==="option3"){
+            checkResult(event.target.textContent);
+        }
+    };
+}
+button.addEventListener("click", loadFirstQuestion);
