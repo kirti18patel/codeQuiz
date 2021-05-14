@@ -147,8 +147,13 @@ body{
     left: 25%;
     font-style: italic;
     font-size: 2rem;
+    border-top: 2px solid var(--answer-response-color);
+    /* display: none; */
+}
+.hide{
     display: none;
 }
-.answer-response hr{
+
+/* .answer-response hr{
     border: 2px solid var(--answer-response-color);
-}
+} */

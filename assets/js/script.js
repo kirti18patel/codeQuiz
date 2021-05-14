@@ -41,14 +41,80 @@ var finalScore = document.querySelector(".result");
 var highScore = document.querySelector(".high-score");
 var answerResponse = document.querySelector(".answer-response");
 
+
+var resultDisplayFormInput = document.createElement("input");
+
 var startTimer;
 var questions;
 var optionsList;
 var options;
 var questionCounter=0;
 var displayQuestionTimer;
-var timerCount=60;
+var timerCount=75;
 var currentScore=0;
+
+var koib = function(){
+    headingBox.style.display = "initial";
+    // console.log("hello");
+};
+
+var highScores = function(event){
+event.preventDefault();
+
+    var dataArray= JSON.parse(localStorage.getItem("highscore")) || [];
+    var userInitials = resultDisplayFormInput.value;
+    dataArray.push({userInitials, timerCount});
+    console.log(dataArray);
+    localStorage.setItem("highscore", JSON.stringify(dataArray));
+    
+
+    finalScore.style.display = "none";
+    time.style.display = "none";
+    pageHighScore.style.display = "none";
+    headingBox.style.display = "none";
+
+    var name = userInitials;
+    var score = timerCount;
+    var highScoreHeading = document.createElement("h1");
+    highScoreHeading.textContent = "High Scores";
+    highScoreHeading.className = "result-heading";
+    highScore.appendChild(highScoreHeading);
+
+    for (var i=0; i<dataArray.length; i++){
+        var highScoreText = document.createElement("h3");
+        highScoreText.textContent = (i+1)+ ". " + dataArray[i].userInitials + " -> " + (dataArray[i].timerCount);
+        highScoreText.className = "high-score-text";
+        highScore.appendChild(highScoreText);
+    }
+
+     var goBackBtn = document.createElement("button");
+     goBackBtn.textContent = "Go Back";
+     goBackBtn.className = "go-back-btn";
+     goBackBtn.onclick = koib;
+     highScore.appendChild(goBackBtn);
+
+     var clearHighScore = document.createElement("button");
+     clearHighScore.textContent = "Go Back";
+     clearHighScore.className = "go-back-btn";
+     clearHighScore.onclick = koib;
+     highScore.appendChild(clearHighScore);
+
+};
+
+var checkResult = function(userChoice){
+    // answerResponse.style.display = "initial"; 
+    answerResponse.classList.remove("hide");  
+    if(userChoice === questionBank[questionCounter].answer){
+        // debugger;
+        currentScore++;
+        answerResponse.textContent = "Correct!";
+    }
+    else{
+        timerCount=timerCount-10;
+        answerResponse.textContent = "Wrong!";
+    }
+    displayNextQuestion();
+};
 
 var displayResult = function(timerCount){
     // questionsBox.remove();
@@ -71,7 +137,7 @@ var displayResult = function(timerCount){
     resultDisplayFormText.textContent = "Enter initials : ";
     resultDisplayForm.appendChild(resultDisplayFormText);
 
-    var resultDisplayFormInput = document.createElement("input");
+    // var resultDisplayFormInput = document.createElement("input");
     resultDisplayFormInput.type = "text";
     resultDisplayFormInput.className = "input font-size";
 
@@ -84,47 +150,39 @@ var displayResult = function(timerCount){
     
     resultDisplayForm.appendChild(resultDisplayFormbutton);
     finalScore.appendChild(resultDisplayForm);
+
+    
+    // var dataObj=[];
+    // var userInitials = resultDisplayFormInput.value;
+    // dataObj.push({userInitials: timerCount});
+    // console.log(userInitials);
+    // localStorage.setItem("highscore", JSON.stringify(dataObj));
+
     var buttonSubmit= document.querySelector(".submit-btn");
     buttonSubmit.addEventListener("click", highScores, 100);
 
-    var userInitials = resultDisplayFormInput.value;
-    console.log(userInitials);
-};
-var highScores = function(){
-    finalScore.style.display = "none";
-    time.style.display = "none";
-    pageHighScore.style.display = "none";
-    headingBox.style.display = "none";
-
-    var name = "kirti";
-    var score = timerCount;
-    var highScoreHeading = document.createElement("h1");
-    highScoreHeading.textContent = "High Scores";
-    highScoreHeading.className = "result-heading";
-    highScore.appendChild(highScoreHeading);
-
-    var highScoreText = document.createElement("h3");
-    highScoreText.textContent = "1. " + name + " -> " + (score+1);
-    highScoreText.className = "high-score-text";
-    highScore.appendChild(highScoreText);
-
-     var goBackBtn = document.createElement("button");
-     goBackBtn.textContent = "Go Back";
-     goBackBtn.className = "go-back-btn";
-     goBackBtn.onclick = koib;
-     highScore.appendChild(goBackBtn);
-
-     var clearHighScore = document.createElement("button");
-     clearHighScore.textContent = "Go Back";
-     clearHighScore.className = "go-back-btn";
-     clearHighScore.onclick = koib;
-     highScore.appendChild(clearHighScore);
 
 };
-var koib = function(){
-    headingBox.style.display = "initial";
-    // console.log("hello");
- };
+
+var displayNextQuestion = function(){
+    // debugger;
+    questionCounter++;
+    
+    // console.log(questionCounter, (questionBank.length), timerCount );
+    if(questionCounter>=(questionBank.length) || timerCount<=0){
+        // console.log(questionCounter, questionBank.length+1, "hiiii");
+        clearInterval(displayQuestionTimer);
+        displayResult(timerCount);
+        clearInterval(startTimer);
+        return;
+    }
+    questions.textContent = questionBank[questionCounter].question;
+    for( var j = 0; j<4; j++){
+        var option = document.querySelector("#option"+j);
+        option.textContent = questionBank[questionCounter].options[j];
+    }
+};
+
 var timer = function(){
     if(timerCount>=0){
         time.innerHTML = "Time : "+timerCount;
@@ -133,32 +191,6 @@ var timer = function(){
     else{
         displayResult(timerCount);
         clearInterval(startTimer);
-    }
-};
-
-var checkResult = function(userChoice){
-    answerResponse.style.display = "initial";    
-    if(userChoice === questionBank[questionCounter].answer){
-        currentScore++;
-        answerResponse.textContent = "Correct!";
-    }
-    else{
-        timerCount=timerCount-10;
-        answerResponse.textContent = "Wrong!";
-    }
-    displayNextQuestion();
-};
-
-var displayNextQuestion = function(){
-    questionCounter++;
-    if(questionCounter>(questionBank.length-1)){
-        clearInterval(displayQuestionTimer);
-        return;
-    }
-    questions.textContent = questionBank[questionCounter].question;
-    for( var j = 0; j<4; j++){
-        var option = document.querySelector("#option"+j);
-        option.textContent = questionBank[questionCounter].options[j];
     }
 };
 
@@ -187,5 +219,6 @@ var loadFirstQuestion = function(){
             checkResult(event.target.textContent);
         }
     };
-}
+};
+
 button.addEventListener("click", loadFirstQuestion);
