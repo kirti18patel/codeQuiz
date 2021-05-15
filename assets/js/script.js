@@ -42,6 +42,7 @@ var highScore = document.querySelector(".high-score");
 var answerResponse = document.querySelector(".answer-response");
 
 var highScoreText;
+var highScoreTextList;
 var resultDisplayFormInput = document.createElement("input");
 
 var startTimer;
@@ -59,7 +60,8 @@ var goBackFun = function(){
 
 var clearHighScoreFun = function(){
     localStorage.clear();
-    highScoreText.classList.add("hide");
+    console.log(highScoreTextList);
+    highScoreTextList.classList.add("hide");
 }
 
 var highScores = function(event){
@@ -84,8 +86,6 @@ event.preventDefault();
     headingBox.classList.add("hide");
     questionsBox.classList.add("hide");
 
-    // var name = userInitials;
-    // var score = timerCount;
     var highScoreHeading = document.createElement("h1");
     highScoreHeading.textContent = "High Scores";
     highScoreHeading.className = "result-heading";
@@ -93,14 +93,16 @@ event.preventDefault();
 
     dataArray.sort(function (a, b) {
         return b.timerCount - a.timerCount;
-      });
-    console.log(dataArray);
+    });
+
+    highScoreTextList = document.createElement("div");
     for (var i=0; i<dataArray.length; i++){
         highScoreText = document.createElement("h3");
         highScoreText.textContent = (i+1)+ ". " + dataArray[i].userInitials + " : " + (dataArray[i].timerCount);
         highScoreText.className = "high-score-text";
-        highScore.appendChild(highScoreText);
+        highScoreTextList.appendChild(highScoreText);
     }
+    highScore.appendChild(highScoreTextList);
 
      var goBackBtn = document.createElement("button");
      goBackBtn.textContent = "Go Back";
