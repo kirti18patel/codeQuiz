@@ -41,7 +41,7 @@ var finalScore = document.querySelector(".result");
 var highScore = document.querySelector(".high-score");
 var answerResponse = document.querySelector(".answer-response");
 
-
+var highScoreText;
 var resultDisplayFormInput = document.createElement("input");
 
 var startTimer;
@@ -53,16 +53,23 @@ var displayQuestionTimer;
 var timerCount=75;
 var currentScore=0;
 
-var koib = function(){
-    headingBox.style.display = "initial";
-    // console.log("hello");
+var goBackFun = function(){
+    highScore.classList.add("hide");    
 };
+
+var clearHighScoreFun = function(){
+    localStorage.clear();
+    highScoreText.classList.add("hide");
+}
 
 var highScores = function(event){
 event.preventDefault();
 
     var dataArray= JSON.parse(localStorage.getItem("highscore")) || [];
     var userInitials = resultDisplayFormInput.value;
+    if(timerCount<0){
+        timerCount=0;
+    }
     dataArray.push({userInitials, timerCount});
     console.log(dataArray);
     localStorage.setItem("highscore", JSON.stringify(dataArray));
@@ -81,7 +88,7 @@ event.preventDefault();
     highScore.appendChild(highScoreHeading);
 
     for (var i=0; i<dataArray.length; i++){
-        var highScoreText = document.createElement("h3");
+        highScoreText = document.createElement("h3");
         highScoreText.textContent = (i+1)+ ". " + dataArray[i].userInitials + " -> " + (dataArray[i].timerCount);
         highScoreText.className = "high-score-text";
         highScore.appendChild(highScoreText);
@@ -90,13 +97,13 @@ event.preventDefault();
      var goBackBtn = document.createElement("button");
      goBackBtn.textContent = "Go Back";
      goBackBtn.className = "go-back-btn";
-     goBackBtn.onclick = koib;
+     goBackBtn.onclick = goBackFun;
      highScore.appendChild(goBackBtn);
 
      var clearHighScore = document.createElement("button");
-     clearHighScore.textContent = "Go Back";
+     clearHighScore.textContent = "Clear high scores";
      clearHighScore.className = "go-back-btn";
-     clearHighScore.onclick = koib;
+     clearHighScore.onclick = clearHighScoreFun;
      highScore.appendChild(clearHighScore);
 
 };
@@ -113,7 +120,7 @@ var checkResult = function(userChoice){
         timerCount=timerCount-10;
         answerResponse.textContent = "Wrong!";
     }
-    displayNextQuestion();
+    setTimeout(displayNextQuestion, 1000);
 };
 
 var displayResult = function(timerCount){
@@ -137,7 +144,6 @@ var displayResult = function(timerCount){
     resultDisplayFormText.textContent = "Enter initials : ";
     resultDisplayForm.appendChild(resultDisplayFormText);
 
-    // var resultDisplayFormInput = document.createElement("input");
     resultDisplayFormInput.type = "text";
     resultDisplayFormInput.className = "input font-size";
 
@@ -151,21 +157,12 @@ var displayResult = function(timerCount){
     resultDisplayForm.appendChild(resultDisplayFormbutton);
     finalScore.appendChild(resultDisplayForm);
 
-    
-    // var dataObj=[];
-    // var userInitials = resultDisplayFormInput.value;
-    // dataObj.push({userInitials: timerCount});
-    // console.log(userInitials);
-    // localStorage.setItem("highscore", JSON.stringify(dataObj));
-
     var buttonSubmit= document.querySelector(".submit-btn");
     buttonSubmit.addEventListener("click", highScores, 100);
-
-
 };
 
 var displayNextQuestion = function(){
-    // debugger;
+    answerResponse.classList.add("hide");
     questionCounter++;
     
     // console.log(questionCounter, (questionBank.length), timerCount );
@@ -222,3 +219,4 @@ var loadFirstQuestion = function(){
 };
 
 button.addEventListener("click", loadFirstQuestion);
+pageHighScore.addEventListener("click", highScores);
