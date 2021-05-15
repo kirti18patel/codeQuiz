@@ -54,7 +54,7 @@ var timerCount=75;
 var currentScore=0;
 
 var goBackFun = function(){
-    highScore.classList.add("hide");    
+    location.reload(true);
 };
 
 var clearHighScoreFun = function(){
@@ -66,30 +66,38 @@ var highScores = function(event){
 event.preventDefault();
 
     var dataArray= JSON.parse(localStorage.getItem("highscore")) || [];
-    var userInitials = resultDisplayFormInput.value;
+    
     if(timerCount<0){
         timerCount=0;
     }
-    dataArray.push({userInitials, timerCount});
-    console.log(dataArray);
-    localStorage.setItem("highscore", JSON.stringify(dataArray));
+    if (resultDisplayFormInput.value!=""){
+        console.log(" not blank");
+        var userInitials = resultDisplayFormInput.value;
     
+    dataArray.push({userInitials, timerCount});
+    localStorage.setItem("highscore", JSON.stringify(dataArray));
+    }
+    
+    finalScore.classList.add("hide");
+    time.classList.add("hide");
+    pageHighScore.classList.add("hide");
+    headingBox.classList.add("hide");
+    questionsBox.classList.add("hide");
 
-    finalScore.style.display = "none";
-    time.style.display = "none";
-    pageHighScore.style.display = "none";
-    headingBox.style.display = "none";
-
-    var name = userInitials;
-    var score = timerCount;
+    // var name = userInitials;
+    // var score = timerCount;
     var highScoreHeading = document.createElement("h1");
     highScoreHeading.textContent = "High Scores";
     highScoreHeading.className = "result-heading";
     highScore.appendChild(highScoreHeading);
 
+    dataArray.sort(function (a, b) {
+        return b.timerCount - a.timerCount;
+      });
+    console.log(dataArray);
     for (var i=0; i<dataArray.length; i++){
         highScoreText = document.createElement("h3");
-        highScoreText.textContent = (i+1)+ ". " + dataArray[i].userInitials + " -> " + (dataArray[i].timerCount);
+        highScoreText.textContent = (i+1)+ ". " + dataArray[i].userInitials + " : " + (dataArray[i].timerCount);
         highScoreText.className = "high-score-text";
         highScore.appendChild(highScoreText);
     }
@@ -105,11 +113,9 @@ event.preventDefault();
      clearHighScore.className = "go-back-btn";
      clearHighScore.onclick = clearHighScoreFun;
      highScore.appendChild(clearHighScore);
-
 };
 
 var checkResult = function(userChoice){
-    // answerResponse.style.display = "initial"; 
     answerResponse.classList.remove("hide");  
     if(userChoice === questionBank[questionCounter].answer){
         // debugger;
@@ -125,7 +131,7 @@ var checkResult = function(userChoice){
 
 var displayResult = function(timerCount){
     // questionsBox.remove();
-    questionsBox.style.display = "none";
+    questionsBox.classList.add("hide");
 
     var resultHeading = document.createElement("h1");
     resultHeading.textContent = "All done!";
@@ -192,7 +198,7 @@ var timer = function(){
 };
 
 var loadFirstQuestion = function(){
-    headingBox.style.display = "none";
+    headingBox.classList.add("hide");
     questions = document.createElement("h1");
     questions.textContent = questionBank[0].question;
     questions.className = "question";
