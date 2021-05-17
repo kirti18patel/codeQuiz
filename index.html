@@ -6,24 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Quiz</title>
     <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- links for fonts and icons added -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- coding game page layout -->
     <main class="page-content">
+        <!-- directly show high score -->
         <h4 class="page-high-score">View High Scores</h4>
+        <!-- timer starts shows 0 in landing page -->
         <h4 class="time">Time : 0</h4>
+        <!-- first landing page container -->
         <div class="heading-box">
             <h1 class="heading">Coding Quiz Challenge</h1>
             <h4 class="instructions">Try to answer the following code-related questions within the time limit. <br>Keep in mind that incorrect answers will penalize your score/Time by ten seconds!</h3>
             <button class="start-btn">Start Quiz</button>
         </div>
-        <div class="questionsBox">
-        </div>
+        <!-- placeholder for questions and options -->
+        <div class="questionsBox"></div>
+        <!-- placeholder for response of user's choice -->
         <div id="answer-response" class="answer-response hide">Wrong!</div>
+        <!-- placeholder to display result -->
         <div class="result"></div>
+        <!-- placeholder to display high score -->
         <div class="high-score"></div>
     </main>
+    <!-- javascript file added -->
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
