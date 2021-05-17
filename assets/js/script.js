@@ -1,3 +1,4 @@
+// all questions, their options and its correct answer defined in array 
 var questionBank= [
     {
         question : "Which built-in method combines the text of two strings and returns a new string?",
@@ -31,6 +32,7 @@ var questionBank= [
     }
 ];
 
+// all required references for elements defined
 var button = document.querySelector(".start-btn");
 var pageHighScore = document.querySelector(".page-high-score");
 var headingBox = document.querySelector(".heading-box");
@@ -54,30 +56,33 @@ var displayQuestionTimer;
 var timerCount=75;
 var currentScore=0;
 
+// reload page when click on go back button
 var goBackFun = function(){
     location.reload(true);
 };
 
+// clear high score from localstorage when click on clear high score button
 var clearHighScoreFun = function(){
     localStorage.clear();
-    console.log(highScoreTextList);
     highScoreTextList.classList.add("hide");
 }
 
+// display high scores by fetching it from localstorage
 var highScores = function(event){
-event.preventDefault();
+    event.preventDefault();
 
+    // get stored data from localstorage or blank array of nothing available
     var dataArray= JSON.parse(localStorage.getItem("highscore")) || [];
     
     if(timerCount<0){
         timerCount=0;
     }
     if (resultDisplayFormInput.value!=""){
-        console.log(" not blank");
         var userInitials = resultDisplayFormInput.value;
-    
-    dataArray.push({userInitials, timerCount});
-    localStorage.setItem("highscore", JSON.stringify(dataArray));
+        
+        // store data to loaclstorage for future reference
+        dataArray.push({userInitials, timerCount});
+        localStorage.setItem("highscore", JSON.stringify(dataArray));
     }
     
     finalScore.classList.add("hide");
@@ -91,10 +96,12 @@ event.preventDefault();
     highScoreHeading.className = "result-heading";
     highScore.appendChild(highScoreHeading);
 
+    // sort object array in decreasing order
     dataArray.sort(function (a, b) {
         return b.timerCount - a.timerCount;
     });
 
+    // display all high scores fetched from localstorage
     highScoreTextList = document.createElement("div");
     for (var i=0; i<dataArray.length; i++){
         highScoreText = document.createElement("h3");
@@ -117,22 +124,23 @@ event.preventDefault();
      highScore.appendChild(clearHighScore);
 };
 
+// checks result every time user chooses an option and give response
 var checkResult = function(userChoice){
     answerResponse.classList.remove("hide");  
     if(userChoice === questionBank[questionCounter].answer){
-        // debugger;
         currentScore++;
         answerResponse.textContent = "Correct!";
     }
     else{
+        // decrement of 10s from timer for every worng answer
         timerCount=timerCount-10;
         answerResponse.textContent = "Wrong!";
     }
     setTimeout(displayNextQuestion, 1000);
 };
 
+// display final result and the end of the quiz when user answers all the question or timer goes to 0
 var displayResult = function(timerCount){
-    // questionsBox.remove();
     questionsBox.classList.add("hide");
 
     var resultHeading = document.createElement("h1");
@@ -169,18 +177,19 @@ var displayResult = function(timerCount){
     buttonSubmit.addEventListener("click", highScores, 100);
 };
 
+// display next question
 var displayNextQuestion = function(){
     answerResponse.classList.add("hide");
     questionCounter++;
     
-    // console.log(questionCounter, (questionBank.length), timerCount );
+    // check condition quiz is over or not and return if quiz is over
     if(questionCounter>=(questionBank.length) || timerCount<=0){
-        // console.log(questionCounter, questionBank.length+1, "hiiii");
         clearInterval(displayQuestionTimer);
         displayResult(timerCount);
         clearInterval(startTimer);
         return;
     }
+    // display next question if quiz is not over
     questions.textContent = questionBank[questionCounter].question;
     for( var j = 0; j<4; j++){
         var option = document.querySelector("#option"+j);
@@ -188,6 +197,7 @@ var displayNextQuestion = function(){
     }
 };
 
+// update timer every 1s from 75s to 0
 var timer = function(){
     if(timerCount>=0){
         time.innerHTML = "Time : "+timerCount;
@@ -199,6 +209,7 @@ var timer = function(){
     }
 };
 
+// display first question
 var loadFirstQuestion = function(){
     headingBox.classList.add("hide");
     questions = document.createElement("h1");
@@ -209,6 +220,7 @@ var loadFirstQuestion = function(){
     optionsList = document.createElement("ul");
     optionsList.className = "options-list";
 
+        // loop to get all options from questionbank
         for(var j=0; j<questionBank[0].options.length; j++){
             options = document.createElement("li");
             options.textContent = questionBank[0].options[j];
@@ -217,14 +229,19 @@ var loadFirstQuestion = function(){
             optionsList.appendChild(options);
         }
     questionsBox.appendChild(optionsList);
+    // update timer every 1s
     startTimer = setInterval(timer, 1000);
     optionsList.onclick = function(event){
         var userChoice = event.target.id;
+        // check result
         if (userChoice ==="option0" || userChoice ==="option1" || userChoice ==="option2" || userChoice ==="option3"){
             checkResult(event.target.textContent);
         }
     };
 };
 
+// display first question when user click on start quiz
 button.addEventListener("click", loadFirstQuestion);
+
+// display high score when user click on view high score in any page
 pageHighScore.addEventListener("click", highScores);
