@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+/* all required colors declared */
 :root{
     --dark-blue : #351c75;
     --purple : #bd60e7;
@@ -11,6 +12,7 @@
     --high-score-light-color : #d9d3e9;
     --answer-response-color : #9f9f9f;
 }
+/* page layout designed using flexbox */
 body{
     display: flex;
     justify-content: center;
@@ -18,6 +20,8 @@ body{
     height: 100vh;
     font-family: 'Lato', sans-serif;
 }
+
+/* container for landing page styling */
 .page-content{
     width: 80%;
     height: 80vh;
@@ -28,17 +32,23 @@ body{
     position: relative;
     padding: 40px;
 }
+
+ /* view high score styling */
 .page-high-score{
     color: var(--purple);
     position: absolute;
     top: 30px;
     cursor: pointer;
 }
+
+/* timer display styling */
 .time{
     position: absolute;
     top: 30px;
     right: 40px;
 }
+
+/* coding quiz starting text styling */
 .heading-box{
     position: absolute;
     top: 35%;
@@ -46,10 +56,14 @@ body{
     transform: translate(-50%,-50%);
     text-align: center;
 }
+
+/* basic rules in landing page styling */
 .heading{
     font-weight: bold;
     margin-bottom: 30px;
 }
+
+/* start button styling in landing page */
 .start-btn{
     padding: 10px 20px;
     color: var(--start-btn-text);
@@ -60,15 +74,22 @@ body{
     border-radius: 5px;
     margin-top: 30px;
 }
+
+/* display question page styling */
 .questionsBox{
     position: absolute;
     top: 35%;
     left: 50%;
     transform: translate(-50%,-50%);
 }
-.question{
+
+/* adding font-weight to question page heading and result page heading*/
+.question,
+.result-heading{
     font-weight:1000;
 }
+
+/* options for answer styling*/
 .options-list{
     list-style: none;
 }
@@ -81,10 +102,13 @@ body{
     width: 40%;
     cursor: pointer;
 }
+
+/* options for answer turn purple when hover */
 .options:hover{
     background: var(--purple);
 }
 
+/* result page styling */
 .result,
 .high-score{
     position: absolute;
@@ -94,26 +118,32 @@ body{
     line-height: 2;
     letter-spacing: 0.8px;
 }
-.result-heading{
-    font-weight:1000;
-}
 
+/* flex box class to align all items to center */
 .flex-box{
     display: flex;
     align-items: center;
 }
+
+/* reusable class for 16px font-size */
 .font-size{
     font-size: 16px;
 }
+
+/* input styling to take user initials */
 .input{
     margin: 15px;
     border: 2px solid gray;
     padding: 6px;
     outline: none;
 }
+
+/* input box styling to take user initials when put cursor on it */
 .input:focus{
     border: 3px solid var(--input-border);
 }
+
+/* common button styling */
 .submit-btn,
 .go-back-btn,
 .clear-high-score-btn{
@@ -126,12 +156,15 @@ body{
     cursor: pointer;
     margin: 0 10px 0 0;
 }
+
+/* common button styling on hover */
 .submit-btn:hover,
 .go-back-btn:hover,
 .clear-high-score-btn:hover{
     background: var(--purple);
 }
 
+/* individual high score display styling */
 .high-score-text{
     background: var(--high-score-light-color);
     padding: 0 10px;
@@ -139,6 +172,8 @@ body{
     font-size: 1.2em;
     margin-bottom: 10px;
 }
+
+/* answer response of user choice styling */
 .answer-response{
     color: var(--answer-response-color);
     position: absolute;
@@ -148,8 +183,9 @@ body{
     font-style: italic;
     font-size: 2rem;
     border-top: 2px solid var(--answer-response-color);
-    /* display: none; */
 }
+
+/* class to hide element */
 .hide{
     display: none;
 }
